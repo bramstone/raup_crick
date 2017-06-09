@@ -1,10 +1,10 @@
 raup.crick=function(spXsite, reps=999, parallel=TRUE, classic_metric=FALSE, similarity=FALSE,
-  split_ties=TRUE, as.distance.matrix=TRUE, set_all_species_equal=FALSE, row_names) {
+  split_ties=TRUE, as.distance.matrix=TRUE, set_all_species_equal=FALSE, rownames_in_col1=FALSE) {
   require(wrswoR)
   require(vegan)
-  if(is.null(row_names)){
-    row.names(spXsite) <- spXsite[,row_names]
-    spXsite <- spXsite[,-row_names]
+  if(rownames_in_col1){
+    row.names(spXsite) <- spXsite[,1]
+    spXsite <- spXsite[,-1]
   }
   #make abundances into ocurrences
   spXsite <- ceiling(spXsite/max(spXsite))
