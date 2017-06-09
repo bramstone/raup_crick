@@ -1,25 +1,4 @@
-#weighted random sampling implementation from Efraimidis & Spirakis created by user Dinre on Stackoverflow 
-#   https://stackoverflow.com/questions/15113650/faster-weighted-sampling-without-replacement
-#PS Efraimidis, PG Spirakis. Weighted random sampling with a reservoir. Information Processing Letters 97: 181-185.
-#This provides a much faster way to implement weighted random sampling without replacement
-#There is also an Rcpp implementation on the above link from user Julius
-wr.sample <- function(data, n, prob){
-  
-  key <- runif(length(data)) ^ (1 / prob)
-  return(data[order(key, decreasing=TRUE)][1:n])
-}
-#v.wr.sample <- Vectorize(wr.sample,vectorize.args="n") #put above null-creation for-loop
-#nulls <- v.wr.sample(1:gamma,alpha_levels,occur) #put in null-creation for-loop in place of v_sample_int_crank
-
-#My implementation of Chase et al.'s Raup Crick code, much is copied but the null distribution method is changed
-#JM Chase, NJB Kraft, KG Smith, M Vellend, BD Inouye. 2011. Using null models to disentangle variation in community 
-#dissimilarity from variation in alpha-diversity. Ecosphere 2: 1-11.
-#
-#classic_metric = FALSE standardizes the metric to range from -1 to 1 instead of the original 0 to 1 as per Chase et al.
-#similarity = FALSE represents an index of dissimilarity, higher values indicate more dissimilarity; TRUE 
-#   multiplies by -1 to convert to a similarity as specified in the original 1979 Raup Crick paper
-
-raup.crick=function(spXsite, reps=9999, parallel=TRUE, classic_metric=FALSE, similarity=FALSE,
+raup.crick=function(spXsite, reps=999, parallel=TRUE, classic_metric=FALSE, similarity=FALSE,
   split_ties=TRUE, as.distance.matrix=TRUE, set_all_species_equal=FALSE, row_names) {
   require(wrswoR)
   require(vegan)
