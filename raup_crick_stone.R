@@ -23,7 +23,7 @@ raup.crick <- function(spXsite, reps=999, parallel=TRUE, classic_metric=FALSE, s
   if(!parallel) {
     n_shared_null <- matrix(integer(reps * pair_count), ncol=reps, nrow=pair_count)
     for(i in 1:reps){
-      cat(paste("\rNull bootstrap iteration", i, "of",reps, sep=" "))
+      cat(paste("\rGenerating bootstrap null values; iteration", i, "of",reps, sep=" "))
       nulls <- v_sample_int_crank(gamma, alpha_levels, occur)
       nulls <- t(sapply(nulls, function(x) {y <- integer(gamma); y[x] <- 1; as.integer(y)}))
       n_shared_null[,i] <- as.integer(as.dist(tcrossprod(nulls)))
@@ -33,8 +33,8 @@ raup.crick <- function(spXsite, reps=999, parallel=TRUE, classic_metric=FALSE, s
   }
   if(parallel) {
     options(warn=-1)
-    require(foreach)
-    require(doParallel) #for Windows
+    require(foreach, quietly=T)
+    require(doParallel, quietly=T) #for Windows
     nCores <- detectCores()
     cl <- makeCluster(nCores)
     registerDoParallel(cl)
